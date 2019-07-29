@@ -24,70 +24,62 @@
 
     div {
       position: absolute;
+      display: block;
+    }
+
+    #score1 {
+      /* float: right; */
+      display: block;
     }
   </style>
-
-  <script>
-    function matchingGame() {
-      var numberOfFaces = 3;
-      var theLeftSide = document.getElementById("leftSide");
-      var theRightSide = document.getElementById("rightSide");
-      var theBody = document.getElementsByTagName("body")[0];
-
-      // To define a function to generate faces. 
-      function generateFaces() {
-        for (var i = 1; i <= numberOfFaces; i++) {
-          var newFace = document.createElement("img");
-          newFace.src = "smile.png";
-          var random_number_top = Math.floor(Math.random() * 425);
-          var random_number_left = Math.floor(Math.random() * 425);
-          newFace.style.top = random_number_top + "px";
-          newFace.style.left = random_number_left + "px";
-          theLeftSide.appendChild(newFace);
-         }
-        // To clone the left side. 
-        var leftSideCloned = theLeftSide.cloneNode(true);
-        // To remove the last child from the cloned left side. 
-        leftSideCloned.removeChild(leftSideCloned.lastChild);
-        // To clone the left side (without the last child) to the right. 
-        theRightSide.appendChild(leftSideCloned);
-        }
-
-      // To call the function that generates inital faces.
-      generateFaces();
-
-      // To go to next level when user clicks on the last child on the left. 
-      theLeftSide.lastChild.onclick = function nextLevel(event) {
-        //To delete the previous set of faces on both sides.
-        while (theLeftSide.firstChild) {
-          theLeftSide.removeChild(theLeftSide.firstChild);
-          }
-        while (theRightSide.firstChild) {
-          theRightSide.removeChild(theRightSide.firstChild);
-          }
-        // To ensure that the event does not also get applied to other elements.
-        event.stopPropagation();
-        // To increase the number of faces. 
-        numberOfFaces += 3;
-        // To call the function that generates faces again.
-        generateFaces();
-        }
-
-      // To end the game when user clicks on anything other than the last child on the left. 
-      theBody.onclick = function gameOver() {
-        alert("Game is over.");
-        theBody.onclick = null;
-        theLeftSide.lastChild.onclick = null;
-        }
-    }
-  </script>
 </head>
 
-<body onload="matchingGame()">
+<body onload="generateFaces()">
   <h1>Matching Game</h1>
   <p>Click on the extra smiling face on the left.</p>
   <div id="leftSide"></div>
   <div id="rightSide"></div>
+
+  <script>
+    var numberOfFaces = 3;
+    var theLeftSide = document.getElementById("leftSide");
+    var theRightSide = document.getElementById("rightSide");
+    var theBody = document.getElementsByTagName("body")[0];
+
+    function generateFaces() {
+      for (var i = 1; i <= numberOfFaces; i++) {
+        var newFace = document.createElement("img");
+        newFace.src = "smile.png";
+
+        var random_number_top = Math.floor(Math.random() * 400);
+        var random_number_left = Math.floor(Math.random() * 400);
+        newFace.style.top = random_number_top + "px";
+        newFace.style.left = random_number_left + "px";
+        theLeftSide.appendChild(newFace);
+      }
+      var leftSideCloned = theLeftSide.cloneNode(true);
+      leftSideCloned.removeChild(leftSideCloned.lastChild);
+      theRightSide.appendChild(leftSideCloned);
+
+      theLeftSide.lastChild.onclick = function nextLevel(event) {
+        while (theLeftSide.firstChild) {
+          theLeftSide.removeChild(theLeftSide.firstChild);
+        }
+        while (theRightSide.firstChild) {
+          theRightSide.removeChild(theRightSide.firstChild);
+        }
+        event.stopPropagation();
+        numberOfFaces += 3;
+        generateFaces();
+      }
+
+      theBody.onclick = function gameOver() {
+        alert("Game is over.");
+        theBody.onclick = null;
+        theLeftSide.lastChild.onclick = null;
+      }
+    }
+  </script>
 </body>
 
 </html>
